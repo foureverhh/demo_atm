@@ -1,5 +1,6 @@
 create database if not exists atm ;
 use atm;
+drop table if exists cash;
 create table if not exists user (
     id int auto_increment primary key not null ,
     name varchar(20) not null,

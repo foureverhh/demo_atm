@@ -4,6 +4,9 @@ import com.example.demo_atm.mapper.CashMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class CashService {
     @Autowired
@@ -46,7 +49,8 @@ public class CashService {
     }
 
     public int withdraw(int value) {
-        int[] cash = new int[3];
+        int counter = 0;
+        Map<Integer,Integer> cash_map = new HashMap<>();
         if(value == 0)
             return 0;
 
@@ -54,28 +58,30 @@ public class CashService {
             return -1;
 
         if(value / 1000 >0) {
-            cash[0] = Math.min(checkBillAmount(1000),value / 1000);
-            value = value - 1000 * cash[0];
+            counter = Math.min(checkBillAmount(1000),value / 1000);
+            value = value - 1000 * counter;
+            cash_map.put(1000,counter);
         }
 
         if(value / 500 >0){
-            cash[1] = Math.min(checkBillAmount(500),value / 500);
-            value = value - 500 * cash[1];
+            counter = Math.min(checkBillAmount(500),value / 500);
+            value = value - 500 * counter;
+            cash_map.put(500,counter);
         }
 
         if(value / 100 >0) {
-            cash[2] = Math.min(checkBillAmount(100),value / 100);
-            value = value - 100 * cash[2];
+            counter = Math.min(checkBillAmount(100),value / 100);
+            value = value - 100 * counter;
+            cash_map.put(100,counter);
         }
+
         if(value != 0) {
             return -1;
         }
-        if (cash[0] > 0)
-            getBill(1000,cash[0]);
-        if (cash[1] > 0)
-            getBill(500,cash[1]);
-        if (cash[2] > 0)
-            getBill(100,cash[2]);
+        cash_map.forEach((k,v) -> {
+            if(v>0)
+                getBill(k,v);
+        });
         return 0;
     }
 
