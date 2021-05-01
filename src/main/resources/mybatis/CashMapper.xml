@@ -22,44 +22,26 @@
     <select id="checkBillAmount" parameterType="int" resultType="int">
         select amount from cash where value = #{value};
     </select>
-<!--
-    <update id="getOneThousand">
-        update cash set amount =
-        <choose>
-            <when test="amount < 1">
-                0
-            </when>
-            <otherwise>
-                amount = amount - 1
-            </otherwise>
-        </choose>
-        where id=2;
+
+    <update id="getOneThousand" parameterType="int">
+        update cash
+        set amount = amount - #{amount}
+        where value=1000 AND amount >= #{amount};
     </update>
 
-    <update id="getOneHundred">
-        update cash set amount =
-        <choose>
-            <when test="amount < 1">
-                0
-            </when>
-            <otherwise>
-                amount = amount - 1
-            </otherwise>
-        </choose>
-        where id=2;
+    <update id="getFiveHundred" parameterType="int">
+        update cash set amount = amount - #{amount}
+        where value=500 AND amount >= #{amount};
     </update>
 
-    <update id="getOneHundred">
-        update cash set amount =
-           <choose>
-               <when test="amount < 1">
-                    0
-               </when>
-               <otherwise>
-                   amount = amount - 1
-               </otherwise>
-           </choose>
-             where id=3;
+    <update id="getOneHundred" parameterType="int">
+        update cash
+        set amount = amount - #{amount}
+        where value=100 AND amount >= #{amount};
     </update>
-    -->
+
+    <update id="getBill" parameterType="map">
+        update cash set amount = amount - #{amount}
+        where value = #{value} AND amount >= #{amount}
+    </update>
 </mapper>
