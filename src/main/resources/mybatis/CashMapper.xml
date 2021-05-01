@@ -6,4 +6,60 @@
     <select id="findAllValue" resultType="int">
         select sum(value * amount) from cash;
     </select>
+
+    <select id="checkOneThousandBill" resultType="int">
+        select amount from cash where value = 1000;
+    </select>
+
+    <select id="checkFiveHundredBill" resultType="int">
+        select amount from cash where value = 500;
+    </select>
+
+    <select id="checkOneHundredBill" resultType="int">
+        select amount from cash where value = 100;
+    </select>
+
+    <select id="checkBillAmount" parameterType="int" resultType="int">
+        select amount from cash where value = #{value};
+    </select>
+<!--
+    <update id="getOneThousand">
+        update cash set amount =
+        <choose>
+            <when test="amount < 1">
+                0
+            </when>
+            <otherwise>
+                amount = amount - 1
+            </otherwise>
+        </choose>
+        where id=2;
+    </update>
+
+    <update id="getOneHundred">
+        update cash set amount =
+        <choose>
+            <when test="amount < 1">
+                0
+            </when>
+            <otherwise>
+                amount = amount - 1
+            </otherwise>
+        </choose>
+        where id=2;
+    </update>
+
+    <update id="getOneHundred">
+        update cash set amount =
+           <choose>
+               <when test="amount < 1">
+                    0
+               </when>
+               <otherwise>
+                   amount = amount - 1
+               </otherwise>
+           </choose>
+             where id=3;
+    </update>
+    -->
 </mapper>

@@ -12,4 +12,32 @@ public class CashService {
     public int findAllValue(){
         return cashMapper.findAllValue();
     }
+
+    public int getOneThousand(){
+        return cashMapper.getOneThousand();
+    }
+
+    public int getFiveHundred(){
+        return cashMapper.getFiveHundred();
+    }
+
+    public int getOneHundred(){
+        return cashMapper.getOneHundred();
+    }
+
+    public int checkOneThousandBill(){
+        return cashMapper.checkOneThousandBill();
+    }
+
+    public int checkFiveHundredBill(){
+        return cashMapper.checkFiveHundredBill();
+    }
+
+    public int checkOneHundredBill(){
+        return cashMapper.checkOneHundredBill();
+    }
+
+    public int checkBillAmount(int value){
+        return cashMapper.checkBillAmount(value);
+    }
 }
