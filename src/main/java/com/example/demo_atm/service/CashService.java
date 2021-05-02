@@ -39,26 +39,31 @@ public class CashService {
      * @return a combination of bills with different withdraw
      */
     public Map withdraw(int withdraw) {
-        //int amount = 0;
+
         Map<Integer,Integer> cash_map = new HashMap<>();
         if(withdraw == 0)
             return null;
 
+        //The ATM can't give out more money than it contains
         if(withdraw > findAllValue())
             return null;
 
+        //The ATM can't give out amounts that the remaining bills don’t add up to
         withdraw = dispatchBills(cash_map,1000,withdraw);
         withdraw = dispatchBills(cash_map,500,withdraw);
         withdraw = dispatchBills(cash_map,100,withdraw);
 
+        //The ATM can't give out amounts that the remaining bills don’t add up to
         if(withdraw != 0) {
             return null;
         }
 
+        //The bills used for withdrawal is removed from the ATM
         cash_map.forEach((k,v) -> {
             if(v>0)
                 getBill(k,v);
         });
+
         return cash_map;
     }
 
