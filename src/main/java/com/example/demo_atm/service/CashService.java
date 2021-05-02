@@ -35,43 +35,40 @@ public class CashService {
 
     /**
      * This method is to determine which combination of bills to withdraw
-     * @param value is the amount of money, one choose to get from atm
-     * @return a combination of bills with different value
+     * @param withdraw is the amount of money, one choose to get from atm
+     * @return a combination of bills with different withdraw
      */
-    public Map withdraw(int value) {
-        int counter = 0;
+    public Map withdraw(int withdraw) {
+        //int amount = 0;
         Map<Integer,Integer> cash_map = new HashMap<>();
-        if(value == 0)
+        if(withdraw == 0)
             return null;
 
-        if(value > findAllValue())
+        if(withdraw > findAllValue())
             return null;
 
-        if(value / 1000 >0) {
-            counter = Math.min(checkBillAmount(1000),value / 1000);
-            value = value - 1000 * counter;
-            cash_map.put(1000,counter);
-        }
+        withdraw = dispatchBills(cash_map,1000,withdraw);
+        withdraw = dispatchBills(cash_map,500,withdraw);
+        withdraw = dispatchBills(cash_map,100,withdraw);
 
-        if(value / 500 >0){
-            counter = Math.min(checkBillAmount(500),value / 500);
-            value = value - 500 * counter;
-            cash_map.put(500,counter);
-        }
-
-        if(value / 100 >0) {
-            counter = Math.min(checkBillAmount(100),value / 100);
-            value = value - 100 * counter;
-            cash_map.put(100,counter);
-        }
-
-        if(value != 0) {
+        if(withdraw != 0) {
             return null;
         }
+
         cash_map.forEach((k,v) -> {
             if(v>0)
                 getBill(k,v);
         });
         return cash_map;
+    }
+
+    private int dispatchBills(Map<Integer,Integer> cash_map, int value, int withdraw){
+        int amount = 0;
+        if(withdraw / value > 0){
+            amount = Math.min(withdraw / value, checkBillAmount(value));
+            withdraw = withdraw - amount * value;
+            cash_map.put(value,amount);
+        }
+        return withdraw;
     }
 }
