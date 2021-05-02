@@ -4,58 +4,48 @@ import com.example.demo_atm.mapper.CashMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CashService {
-    @Autowired
     private CashMapper cashMapper;
+
+    @Autowired
+    public void setCashMapper(CashMapper cashMapper) {
+        this.cashMapper = cashMapper;
+    }
 
     public int findAllValue(){
         return cashMapper.findAllValue();
-    }
-
-    public int getOneThousand(int amount){
-        return cashMapper.getOneThousand(amount);
-    }
-
-    public int getFiveHundred(int amount){
-        return cashMapper.getFiveHundred(amount);
-    }
-
-    public int getOneHundred(int amount){
-        return cashMapper.getOneHundred(amount);
-    }
-
-    public int checkOneThousandBill(){
-        return cashMapper.checkOneThousandBill();
-    }
-
-    public int checkFiveHundredBill(){
-        return cashMapper.checkFiveHundredBill();
-    }
-
-    public int checkOneHundredBill(){
-        return cashMapper.checkOneHundredBill();
     }
 
     public int checkBillAmount(int value){
         return cashMapper.checkBillAmount(value);
     }
 
+    /**
+     * This method is to bills from database atm.cash
+     * @param value determines what kind of bill going to be get from database
+     * @param amount determines quantity of bill going to be get from database
+     * @return how many types bill updated in the database
+     */
     public int getBill(int value,int amount){
         return cashMapper.getBill(value,amount);
     }
 
-    public int withdraw(int value) {
+    /**
+     * This method is to determine which combination of bills to withdraw
+     * @param value is the amount of money, one choose to get from atm
+     * @return a combination of bills with different value
+     */
+    public Map withdraw(int value) {
         int counter = 0;
         Map<Integer,Integer> cash_map = new HashMap<>();
         if(value == 0)
-            return 0;
+            return null;
 
         if(value > findAllValue())
-            return -1;
+            return null;
 
         if(value / 1000 >0) {
             counter = Math.min(checkBillAmount(1000),value / 1000);
@@ -76,14 +66,12 @@ public class CashService {
         }
 
         if(value != 0) {
-            return -1;
+            return null;
         }
         cash_map.forEach((k,v) -> {
             if(v>0)
                 getBill(k,v);
         });
-        return 0;
+        return cash_map;
     }
-
-
 }

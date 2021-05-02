@@ -7,38 +7,18 @@
         select sum(value * amount) from cash;
     </select>
 
-    <select id="checkOneThousandBill" resultType="int">
-        select amount from cash where value = 1000;
-    </select>
-
-    <select id="checkFiveHundredBill" resultType="int">
-        select amount from cash where value = 500;
-    </select>
-
-    <select id="checkOneHundredBill" resultType="int">
-        select amount from cash where value = 100;
+    <resultMap id="allCash" type="Cash">
+        <id column="id" property="id"/>
+        <result column="value" property="value"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+    <select id="findAll" resultMap="allCash">
+        select * from cash;
     </select>
 
     <select id="checkBillAmount" parameterType="int" resultType="int">
         select amount from cash where value = #{value};
     </select>
-
-    <update id="getOneThousand" parameterType="int">
-        update cash
-        set amount = amount - #{amount}
-        where value=1000 AND amount >= #{amount};
-    </update>
-
-    <update id="getFiveHundred" parameterType="int">
-        update cash set amount = amount - #{amount}
-        where value=500 AND amount >= #{amount};
-    </update>
-
-    <update id="getOneHundred" parameterType="int">
-        update cash
-        set amount = amount - #{amount}
-        where value=100 AND amount >= #{amount};
-    </update>
 
     <update id="getBill" parameterType="map">
         update cash set amount = amount - #{amount}
